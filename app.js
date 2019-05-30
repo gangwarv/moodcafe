@@ -46,7 +46,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 //Connect mongoDb
-mongoose.connect('mongodb+srv://mongo-user1:mongo-user1@studentcluster-k7i07.mongodb.net/moodcafe?retryWrites=true');
+mongoose.connect('mongodb+srv://moodcafe-user:moodcafe-pwd@studentcluster-k7i07.mongodb.net/moodcafe?retryWrites=true');
 
 // Helper function.. 
 function isAuthenticated(req, res, next) {
