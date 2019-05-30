@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var cors = require('cors');
+var jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,15 +28,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/books', booksRouter);
+app.use('/books', isAuthenticated, booksRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -44,6 +45,20 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-//Connect mongo
+//Connect mongoDb
 mongoose.connect('mongodb+srv://mongo-user1:mongo-user1@studentcluster-k7i07.mongodb.net/moodcafe?retryWrites=true');
+
+// Helper function.. 
+function isAuthenticated(req, res, next) {
+  jwt.verify(req.headers['x-access-token'], 'secretKey', function (err, decoded) {
+    if (err) {
+      res.status(401).end();
+    } else {
+      // add user id to request, if you need access
+      req.body.userId = decoded.id;
+      next();
+    }
+  });
+}
+
 module.exports = app;

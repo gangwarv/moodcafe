@@ -4,13 +4,11 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     create: function (req, res, next) {
-
-        userModel.create({ userName: req.query.userName, password: bcrypt.hashSync(req.query.password, 10) }, function (err, data) {
+        userModel.create({ userName: req.body.userName, password: bcrypt.hashSync(req.body.password, 10) }, function (err, data) {
             if (err)
                 next(err);
             else
                 res.json({ status: "success", message: "User added successfully!", data: data });
-
         });
     },
     getToken: function (req, res, next) {
@@ -26,11 +24,5 @@ module.exports = {
                 }
             }
         });
-    },
-    get: function (req, res, next) {
-        res.json({ test: 'Succeed' })
-    },
-    getOne: function (req, res, next) {
-        res.json({ test: 'Succeed', post: true })
     }
 }

@@ -1,9 +1,8 @@
-const bookModel = require('../models/book');
+var bookModel = require('../models/book');
 
 module.exports = {
     create: function (req, res, next) {
-
-        bookModel.create({ title: req.query.title, price: req.query.price }, function (err, data) {
+        bookModel.create({ title: req.body.title, price: req.body.price }, function (err, data) {
             if (err)
                 next(err);
             else
@@ -24,17 +23,3 @@ module.exports = {
         });
     }
 }
-
-
-function validateUser(req, res, next) {
-    jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
-      if (err) {
-        res.json({status:"error", message: err.message, data:null});
-      }else{
-        // add user id to request
-        req.body.userId = decoded.id;
-        next();
-      }
-    });
-    
-  }
