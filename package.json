@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "mocha tests/*.js",
+    "test": "mocha tests/*.js --exit",
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
